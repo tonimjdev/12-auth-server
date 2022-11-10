@@ -1,0 +1,9 @@
+# Node
+/node_modules
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Ignora los archivos relacionados a API keys
+.env
