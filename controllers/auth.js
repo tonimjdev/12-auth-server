@@ -4,6 +4,8 @@ const Usuario = require("../models/Usuario");
 const bcrypt = require("bcryptjs");
 const { generarJWT } = require("../helpers/jwt");
 
+
+// NEW USER
 const crearUsuario = async (req, res = response) => {
   const { email, name, password } = req.body;
 
@@ -36,6 +38,7 @@ const crearUsuario = async (req, res = response) => {
       ok: true,
       uid: dbUser.id,
       name,
+      email,
       token,
     });
   } catch (error) {
@@ -47,6 +50,8 @@ const crearUsuario = async (req, res = response) => {
   }
 };
 
+
+// LOGIN USER
 const loginUsuario = async (req, res = response) => {
   /*   const errors = validationResult( req );
     if (!errors.isEmpty()) {
@@ -86,6 +91,7 @@ const loginUsuario = async (req, res = response) => {
       ok: true,
       uid: dbUser.id,
       name: dbUser.name,
+      email: dbUser.email,
       token,
     });
   } catch (error) {
@@ -98,17 +104,25 @@ const loginUsuario = async (req, res = response) => {
   }
 };
 
+
+// REVALIDAR TOKEN
 const revalidarToken = async (req, res = response) => {
 
-    const { uid, name } = req;
+    const { uid } = req;
+
+    // Leer base de datos para obtener email
+    const dbUser = await Usuario.findById(uid);
+
+
 
     // Generar el JWT
-    const token = await generarJWT( uid, name );
+    const token = await generarJWT( uid, dbUser.name );
     
   return res.json({
     ok: true,
     uid,
-    name,
+    name: dbUser.name,
+    email: dbUser.email,
     token
   });
 };
