@@ -8,5 +8,3 @@ Thumbs.db
 # Ignora los archivos relacionados a API keys
 .env
 
-# Public
-/public
